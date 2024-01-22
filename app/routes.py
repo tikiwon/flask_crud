@@ -1,4 +1,5 @@
 # routes.py
+import sqlalchemy
 from flask import Blueprint, request, jsonify
 from .models import db, User
 
@@ -18,14 +19,25 @@ def get_user(user_id):
 
 @users_bp.route('/users', methods=['POST'])
 def add_user():
-    id = request.json['id']
-    username = request.json['username']
-    email = request.json['email']
-    user = User(id=id,
-                      username=username,
-                      email=email)
-    db.session.add(user)
-    db.session.commit()
+    try:
+        id = request.json['id']
+        if not id.isnumeric():
+            return 'ID must be a integer', 400
+        username = request.json['username']
+        email = request.json['email']
+    except:
+        return "Id, username, and email are required", 400
+
+    if User.query.get(id):
+        return "User already exist with this id", 409
+    try:
+        user = User(id=id,
+                          username=username,
+                          email=email)
+        db.session.add(user)
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError:
+        return "Username must be unique with the maximum 50 characters, and email must be unique with the maximum 120 characters", 409
 
     return jsonify(user.serialize)
 
@@ -33,14 +45,14 @@ def add_user():
 def update_user(user_id):
     user = User.query.get_or_404(user_id)
 
-    username = request.json['username']
-    email = request.json['email']
+    user.username = request.json.get('username', user.username)
+    user.email = request.json.get('email', user.email)
 
-    user.username = username
-    user.email = email
-
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError:
+        return "Username must be unique with the maximum 50 characters, and email must be unique with the maximum 120 characters", 409
 
     return jsonify(user.serialize)
 
