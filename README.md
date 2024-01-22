@@ -26,7 +26,7 @@ Install all content from requirements.txt: "pip install -r .\requirements.txt"
 Install the virtual environment by using the command inside your terminal: "python -m venv venv"
 Note: If you're using pyCharm it will activate the environment for you, if using other IDE, use the website below to activate it:
 https://mothergeo-py.readthedocs.io/en/latest/development/how-to/venv-win.html
-Optional: For testing, install: "pip install pytest" and "pip install pytest-flask"
+Optional: For testing, install: "pip install pytest"
 
 ------------
 
@@ -37,7 +37,7 @@ Install SQLAlchemy: "pip install Flask-SQLAlchemy"
 Install the virtual environment by using the command: python -m venv venv
 Note: If you're using pyCharm it will activate the environment for you, if using other IDE, use the website below to activate it:
 https://mothergeo-py.readthedocs.io/en/latest/development/how-to/venv-win.html
-Optional: For testing, install: "pip install pytest" and "pip install pytest-flask"
+Optional: For testing, install: "pip install pytest"
 
 ```
 ## Using flask_crud project
